@@ -2,25 +2,25 @@
 import { useState } from 'react'
 import type { Client, FlowData, SegmentData } from '@/lib/types'
 import { C, PageHeader, SectionLabel, Card, Grid, TabBar, TextArea, Input, Btn, Toggle, InsightBadge, StatusBadge } from '../ui'
- 
+
 type Props = { client: Client; onUpdate: (c: Client) => void }
- 
+
 const FLOW_PRIORITY_ORDER = ['Welcome Series', 'Abandoned Cart', 'Browse Abandonment', 'Post-Purchase', 'Review Request', 'Cross-sell', 'Replenishment', 'Win-Back', 'Back-in-Stock', 'VIP Flow', 'Price Drop Flow', 'Sunset / Unengaged']
- 
+
 export default function ModuleRetention({ client, onUpdate }: Props) {
   const [tab, setTab] = useState('setup')
   const r = client.retention
   const upd = (patch: Partial<typeof r>) => onUpdate({ ...client, retention: { ...r, ...patch } })
- 
+
   const updateFlow = (id: string, patch: Partial<FlowData>) => upd({ flows: r.flows.map(f => f.id === id ? { ...f, ...patch } : f) })
   const updateSegment = (id: string, patch: Partial<SegmentData>) => upd({ segments: r.segments.map(s => s.id === id ? { ...s, ...patch } : s) })
- 
+
   const liveFlows = r.flows.filter(f => f.status === 'live').length
   const totalFlowRevenue = r.flows.filter(f => f.revenue30d).reduce((sum, f) => {
     const val = parseFloat(f.revenue30d.replace(/[^0-9.]/g, '')) || 0
     return sum + val
   }, 0)
- 
+
   const tabs = [
     { id: 'setup', label: '⚙️ Setup' },
     { id: 'flows', label: '📧 Email Flows' },
@@ -28,13 +28,13 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
     { id: 'sms', label: '📱 SMS & Referral' },
     { id: 'strategy', label: '🧠 Strategy' },
   ]
- 
+
   return (
     <div>
       <PageHeader icon="🔁" color="#065F46" title="Module 6 — Retention & Email Engine"
         subtitle="This is where profit compounds. Right message, right customer, right time. Segment properly. Personalize everything. Get them coming back." />
       <TabBar tabs={tabs} active={tab} onChange={setTab} />
- 
+
       {tab === 'setup' && (
         <div>
           <SectionLabel>Platform Setup</SectionLabel>
@@ -61,7 +61,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
             <Input label="Repeat purchase rate (%)" value={r.repeatPurchaseRate} onChange={v => upd({ repeatPurchaseRate: v })} placeholder="e.g. 31%" />
             <Input label="Win-back rate (%)" value={r.winbackRate} onChange={v => upd({ winbackRate: v })} placeholder="e.g. 12%" />
           </Grid>
- 
+
           <div style={{ background: C.bgSection, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 14px', marginTop: '1rem' }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Flow priority order (build in this sequence)</div>
             {FLOW_PRIORITY_ORDER.map((name, i) => (
@@ -74,7 +74,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
           </div>
         </div>
       )}
- 
+
       {tab === 'flows' && (
         <div>
           <SectionLabel>Email Flows — Status & Performance</SectionLabel>
@@ -118,7 +118,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
           ))}
         </div>
       )}
- 
+
       {tab === 'segments' && (
         <div>
           <SectionLabel>Segmentation — Right Message to Right Customer</SectionLabel>
@@ -141,7 +141,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
           <TextArea label="Personalization approach — how to make emails feel 1-to-1" value={r.personalizationNotes} onChange={v => upd({ personalizationNotes: v })} rows={4} placeholder={`e.g. "Hey [first name], I'm [founder name] reaching out personally because you bought [product]..." — use purchase data, behavior, product category to personalize every flow`} />
         </div>
       )}
- 
+
       {tab === 'sms' && (
         <div>
           <SectionLabel>SMS Strategy</SectionLabel>
@@ -158,7 +158,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
               </div>
             </Grid>
           </div>
- 
+
           <SectionLabel>Referral Program</SectionLabel>
           <Card>
             <Toggle label="Referral program live?" value={r.referralProgram} onChange={v => upd({ referralProgram: v })} />
@@ -167,7 +167,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
           <InsightBadge type="win" text="A referral program creates an ecosystem where loyal customers constantly refer new ones. Every referred customer comes in at near-zero CAC with higher trust. This compounds over time." />
         </div>
       )}
- 
+
       {tab === 'strategy' && (
         <div>
           <SectionLabel>30-Day Email Implementation Plan</SectionLabel>
@@ -184,7 +184,7 @@ export default function ModuleRetention({ client, onUpdate }: Props) {
               </div>
             ))}
           </div>
- 
+
           <SectionLabel>The Customer Journey We're Building</SectionLabel>
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: '1.25rem', overflowX: 'auto' }}>
             {['Visitor', 'Subscriber', 'First purchase', 'Repeat buyer', 'Loyal customer', 'Brand advocate'].map((stage, i, arr) => (
