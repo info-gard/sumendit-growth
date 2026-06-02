@@ -138,7 +138,7 @@ export default function ModuleResearch({ client, onUpdate }: Props) {
             <TextArea label="What products were selling the most during best periods?" value={r.bestProducts} onChange={v => upd({ bestProducts: v })} rows={3} />
             <TextArea label="What ads were running during best months? What worked?" value={r.bestAds} onChange={v => upd({ bestAds: v })} rows={3} />
             <TextArea label="What offers were running? What drove the most conversions?" value={r.bestOffers} onChange={v => upd({ bestOffers: v })} rows={3} />
-            <TextArea label="What content types worked best?" value={r.bestContent} onChange={v => upd({ bestContent: v })} placeholder="Videos, UGC, founder content, static images, what format?" onChange={v => upd({ bestContent: v })} rows={3} />
+            <TextArea label="What content types worked best?" value={r.bestContent} onChange={v => upd({ bestContent: v })} placeholder="Videos, UGC, founder content, static images, what format?" rows={3} />
           </Grid>
         </div>
       )}
